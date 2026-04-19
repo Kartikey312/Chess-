@@ -54,18 +54,18 @@ export class Game {
 
     this.moveCount++;
 
-
     const opponent = player === this.player1 ? this.player2 : this.player1;
+    const movePayload = {
+      type: MOVE,
+      payload: {
+        move,
+        moveCount: this.moveCount,
+      },
+    };
 
-    opponent.send(
-      JSON.stringify({
-        type: MOVE,
-        payload: {
-          move,
-          moveCount: this.moveCount,
-        },
-      })
-    );
+    // Send move to both players
+    player.send(JSON.stringify(movePayload));
+    opponent.send(JSON.stringify(movePayload));
 
 
     if (this.board.isGameOver()) {
